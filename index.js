@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const cors = require('cors');
 require('dotenv').config()
 const userRoutes = require('./routes/users.js')
+const loanRoutes = require('./routes/loans.js')
 
 const app = express()
 
@@ -10,6 +11,7 @@ app.use(express.json())
 app.use(cors())
 
 app.use('/api/user', userRoutes)
+app.use('/api/loan', loanRoutes)
 
 mongoose.set("strictQuery", false);
 mongoose.connect(process.env.MONGO_URI)

@@ -7,7 +7,7 @@ const getAllUsers = async (req, res, next) => {
     try {
         users = await User.find()
     } catch (error) {
-        console.log(error);
+        return console.log(error);
     }
 
     if (!users) {
@@ -24,7 +24,7 @@ const signup = async (req, res) => {
     try {
         existingUser = await User.findOne({ email })
     } catch (error) {
-        console.log(error);
+        return console.log(error);
     }
 
     if (existingUser) {
@@ -46,7 +46,7 @@ const signup = async (req, res) => {
     try {
         await user.save()
     } catch (error) {
-        console.log(error);
+        return console.log(error);
     }
 
     return res.status(200).json({ user })
@@ -60,7 +60,7 @@ const login = async (req, res) => {
     try {
         existingUser = await User.findOne({ email })
     } catch (error) {
-        console.log(error);
+        return console.log(error);
     }
 
     if (!existingUser) {
