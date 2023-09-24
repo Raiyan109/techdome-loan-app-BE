@@ -76,7 +76,9 @@ const deleteLoan = async (req, res) => {
     const loanId = req.params.id
     let loans;
     try {
-        loans = await Loan.findByIdAndRemove(loanId)
+        loans = await Loan.findByIdAndRemove(loanId).populate('user')
+        await loans.user.loans.pull(loans)
+        await loans.user.save()
     } catch (error) {
         return console.log(error);
     }
@@ -102,6 +104,22 @@ const getLoanById = async (req, res) => {
     return res.status(200).json({ loans })
 }
 
+// GET all loans of a single user
+const getByUserId = async (req, res) => {
+    const userId = req.params.id
+    let userLoans;
+    try {
+        userLoans = await User.findById(userId).populate('loans')
+    } catch (error) {
+        return console.log(error);
+    }
+
+    if (!userLoans) {
+        return res.status(404).json({ message: 'No loan found' })
+    }
+    return res.status(200).json({ loans: userLoans })
+}
+
 
 
 
@@ -112,4 +130,5 @@ module.exports = {
     updateLoan,
     deleteLoan,
     getLoanById,
+    getByUserId
 }
