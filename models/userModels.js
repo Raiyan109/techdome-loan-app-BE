@@ -15,7 +15,12 @@ const usersSchema = new Schema({
         type: String,
         required: true,
         minLength: 6
-    }
+    },
+    loans: [{
+        type: mongoose.Types.ObjectId,
+        ref: 'Loan',
+        required: true
+    }]
 })
 
 module.exports = mongoose.model('User', usersSchema)

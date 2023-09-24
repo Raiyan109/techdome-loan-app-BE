@@ -1,4 +1,6 @@
+const { default: mongoose } = require('mongoose');
 const Loan = require('../models/loanModels.js')
+const User = require('../models/userModels.js')
 
 // GET all loans
 const getAllLoans = async (req, res) => {
@@ -18,17 +20,34 @@ const getAllLoans = async (req, res) => {
 
 
 const addLoan = async (req, res) => {
-    const { amount, term } = req.body
+    const { amount, term, user } = req.body
+    let existingUser;
+    try {
+        existingUser = await User.findById(user)
+    } catch (error) {
+        return console.log(error);
+    }
+
+    if (!existingUser) {
+        return res.status(404).json({ message: 'No User found by this id' })
+    }
 
     const loan = new Loan({
         amount,
         term,
+        user
     })
 
     try {
-        await loan.save()
+        const session = await mongoose.startSession()
+        session.startTransaction()
+        await loan.save({ session })
+        existingUser.loans.push(loan)
+        await existingUser.save({ session })
+        await session.commitTransaction()
     } catch (error) {
-        return console.log(error)
+        console.log(error)
+        return res.status(404).json({ message: error })
     }
 
     return res.status(200).json({ loan })

@@ -40,7 +40,8 @@ const signup = async (req, res) => {
     const user = new User({
         name,
         email,
-        password: hashedPassword
+        password: hashedPassword,
+        loans: [],
     })
 
     try {
