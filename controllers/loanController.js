@@ -68,6 +68,21 @@ const deleteLoan = async (req, res) => {
     return res.status(200).json({ message: "Successfully deleted" })
 }
 
+const getLoanById = async (req, res) => {
+    const id = req.params.id
+    let loans;
+    try {
+        loans = await Loan.findById(id)
+    } catch (error) {
+        return console.log(error);
+    }
+
+    if (!loans) {
+        return res.status(404).json({ message: 'No loan found by this id' })
+    }
+    return res.status(200).json({ loans })
+}
+
 
 
 
@@ -77,4 +92,5 @@ module.exports = {
     addLoan,
     updateLoan,
     deleteLoan,
+    getLoanById,
 }
