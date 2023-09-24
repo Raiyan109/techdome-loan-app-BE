@@ -75,7 +75,7 @@ const login = async (req, res) => {
         return res.status(400).json({ message: 'Password did not match' })
     }
 
-    return res.status(200).json({ message: "Login successful" })
+    return res.status(200).json({ message: 'Login Successfull', existingUser })
 }
 
 module.exports = {

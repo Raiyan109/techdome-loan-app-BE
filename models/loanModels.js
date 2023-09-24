@@ -15,7 +15,10 @@ const loanSchema = new Schema({
         type: mongoose.Types.ObjectId,
         ref: 'User',
         required: true,
+    },
+    isPaid: {
+        type: String,
     }
-})
+}, { timestamps: true })
 
 module.exports = mongoose.model('Loan', loanSchema)

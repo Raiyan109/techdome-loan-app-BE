@@ -6,7 +6,7 @@ const User = require('../models/userModels.js')
 const getAllLoans = async (req, res) => {
     let loans;
     try {
-        loans = await Loan.find()
+        loans = await Loan.find().sort({ createdAt: -1 })
     } catch (error) {
         return console.log(error);
     }
